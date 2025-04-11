@@ -10,15 +10,21 @@ export default function Home() {
     const lastRedirect = localStorage.getItem("lastRedirectTime");
     const lastTime = lastRedirect ? parseInt(lastRedirect, 10) : 0;
 
-    // Nếu chưa đủ 3 giây kể từ lần redirect cuối
+    // Lấy path và query hiện tại
+    const path = window.location.pathname.replace(/^\/phamvandien/, "");
+    const search = window.location.search;
+    const fullPath = path + search;
+
+    const redirectTo = `https://phamvandiens1.vercel.app${fullPath}`;
+
     if (now - lastTime < 3000) {
-      window.location.href = "https://phamvandiens1.vercel.app/";
+      window.location.href = redirectTo;
     } else {
       const interval = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
             localStorage.setItem("lastRedirectTime", Date.now().toString());
-            window.location.href = "https://phamvandiens1.vercel.app/";
+            window.location.href = redirectTo;
             clearInterval(interval);
             return 0;
           }
